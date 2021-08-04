@@ -1,10 +1,12 @@
 <template>
   <div class="mode">
+    <p class="mode__tit">檢視模式：</p>
     <div class="mode__cntr">
       <button
         v-for="(item, index) in modeList" :key="index"
         @click="clickModehandler(item.id)"
         class="mode__btn"
+        :class="{'mode__btn--active': item.id === nowMode}"
         :id="item.id"
         type="button"
       >
@@ -23,6 +25,7 @@ export default {
   name: 'Mode',
   data() {
     return {
+      nowMode: 'ListMode',
       modeList: [
         {
           id: 'ListMode',
@@ -41,6 +44,7 @@ export default {
   },
   methods: {
     clickModehandler(mode) {
+      this.nowMode = mode;
       this.$bus.$emit('changeMode', mode);
     },
   },
@@ -48,8 +52,22 @@ export default {
 </script>
 
 <style>
+.mode {
+  display: flex;
+  align-items: center;
+}
+
+.mode__tit {
+  color: #aaa;
+}
+
+.mode__cntr {
+  display: flex;
+  align-items: center;
+}
+
 .mode__btn + .mode__btn{
-  margin-left: 6px;
+  margin-left: 10px;
 }
 
 .mode__btn {

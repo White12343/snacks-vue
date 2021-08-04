@@ -16,10 +16,10 @@
         v-for="(item, index) in cardDataList"
         :key="index">
         <td class="listTable__td text-cancel text-right">{{ index + 1 }}</td>
-        <td class="listTable__td text-cancel">{{ item.City }}</td>
-        <td class="listTable__td text-cancel">{{ item.Town }}</td>
-        <td class="listTable__td">{{ item.Name }}</td>
-        <td class="listTable__td">{{ item.Address }}</td>
+        <td class="listTable__td text-cancel" :title="item.City">{{ item.City }}</td>
+        <td class="listTable__td text-cancel" :title="item.Town">{{ item.Town }}</td>
+        <td class="listTable__td" :title="item.Name">{{ item.Name }}</td>
+        <td class="listTable__td" :title="item.Address">{{ item.Address }}</td>
       </tr>
     </tbody>
   </table>
@@ -68,23 +68,19 @@ export default {
 }
 
 .listTable__num {
-  width: 60px;
+  width: 45px;
 }
 
 .listTable__city {
-  width: 90px;
+  width: 85px;
 }
 
 .listTable__town {
-  width: 90px;
+  width: 85px;
 }
 
 .listTable__name {
-  width: 280px;
-}
-
-.listTable__address {
-  width: 370px;
+  width: 180px;
 }
 
 .listTable__tr--cancel {

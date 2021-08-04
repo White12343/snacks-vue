@@ -1,6 +1,9 @@
 <template>
   <div class="console">
-    <div class="console__filter"></div>
+    <div class="console__filter">
+      <select name="" id="" disabled="disabled"></select>
+      <select name="" id="" disabled="disabled"></select>
+    </div>
     <Mode/>
   </div>
 </template>
@@ -16,6 +19,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.console {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
 
 </style>
