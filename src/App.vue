@@ -3,29 +3,29 @@
     <Header/>
     <main class="main container mx-auto">
       <div class="main__cntr">
-        <!-- <ListConsole/> -->
         <SnacksList/>
       </div>
       <aside class="aside">
         <Ad/>
       </aside>
     </main>
+    <Footer/>
   </div>
 </template>
 
 <script>
 import Header from './components/Header';
-import ListConsole from './components/ListConsole';
 import SnacksList from './components/SnacksList';
 import Ad from './components/Ad';
+import Footer from './components/Footer';
 
 export default {
   name: 'App',
   components: {
     Header,
-    ListConsole,
     SnacksList,
     Ad,
+    Footer,
   },
 };
 </script>
@@ -46,6 +46,7 @@ ol {
 }
 
 body {
+  margin: 0;
   line-height: 1.7;
   background-color: #eee;
 }
@@ -70,6 +71,7 @@ body {
 @media screen and (max-width: 768px) {
   .main {
     display: block;
+    padding: 0 12px;
   }
 
   .main__cntr {

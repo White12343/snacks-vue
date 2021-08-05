@@ -6,14 +6,16 @@
         class="snacks__ls"
         v-if="mode === 'ListMode' || mode === 'CardMode'"
       >
-        <li class="snacks__li" v-for="(item, index) in filterTown" :key="index">
+        <li class="snacks__li" v-for="(item, index) in getPerPageData" :key="index">
           <Card :mode="mode" :card-data="item"/>
         </li>
       </ul>
       <div class="snacks__table" v-else-if="mode === 'TableMode'">
-        <ListTable :card-data-list="filterTown"/>
+        <ListTable :card-data-list="getPerPageData"/>
       </div>
     </div>
+    <Pagnation class="snacks__pagnation" :list-data-length="filterTown.length" v-model="nowPage"/>
+    <Loading v-if="isLoading"/>
   </div>
 </template>
 
@@ -21,17 +23,21 @@
 import Card from './Card';
 import ListTable from './ListTable';
 import ListConsole from './ListConsole';
+import Pagnation from './Pagnation';
+import Loading from './Loading';
 
 export default {
   name: 'SnacksList',
   data() {
     return {
       mode: 'ListMode',
+      isLoading: false,
       cardData: [],
       filterKeywords: {
         city: '',
         town: '',
       },
+      nowPage: 1,
     };
   },
   created() {
@@ -41,12 +47,19 @@ export default {
   methods: {
     getData() {
       const api = '/static/data/data.json';
+      this.isLoading = true;
+      document.body.style.overflow = 'hidden';
       fetch(api)
         .then(res => res.json())
-        .then((data) => { this.cardData = data; });
+        .then((data) => {
+          this.isLoading = false;
+          document.body.style.overflow = '';
+          this.cardData = data;
+        });
     },
     setFilterKeywords(keywords) {
       this.filterKeywords = keywords;
+      this.nowPage = 1;
     },
   },
   computed: {
@@ -76,11 +89,26 @@ export default {
 
       return this.filterCity.filter(item => item.Town === this.filterKeywords.town);
     },
+    getPerPageData() {
+      const NUM_PER_PAGE = 10;
+      const arr = [];
+      const min = (this.nowPage - 1) * NUM_PER_PAGE;
+      const max = min + NUM_PER_PAGE;
+      for (let i = min; i < max; i += 1) {
+        if (!this.filterTown[i]) {
+          break;
+        }
+        arr.push(this.filterTown[i]);
+      }
+      return arr;
+    },
   },
   components: {
     Card,
     ListTable,
     ListConsole,
+    Pagnation,
+    Loading,
   },
 };
 </script>
@@ -99,6 +127,14 @@ export default {
 
 .snacks-card .snacks__li {
   width: 49%;
+}
+
+.snacks__cntr {
+  margin-bottom: 1em;
+}
+
+.snacks__pagnation {
+  margin-bottom: 1em;
 }
 
 /* media query */
