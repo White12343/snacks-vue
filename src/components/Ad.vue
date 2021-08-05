@@ -14,7 +14,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'Ad',
   data() {
@@ -22,15 +21,15 @@ export default {
       adData: [
         {
           name: 'adv1',
-          imgUrl: '/static/adv1.png',
+          imgUrl: '/static/images/adv1.png',
         },
         {
           name: 'adv2',
-          imgUrl: '/static/adv2.png',
+          imgUrl: '/static/images/adv2.png',
         },
         {
           name: 'adv3',
-          imgUrl: '/static/adv3.png',
+          imgUrl: '/static/images/adv3.png',
         },
       ],
     };
