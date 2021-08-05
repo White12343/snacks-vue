@@ -11,7 +11,7 @@
         </li>
       </ul>
       <div class="snacks__table" v-else-if="mode === 'TableMode'">
-        <ListTable :card-data-list="getPerPageData"/>
+        <ListTable :card-data-list="getPerPageData" :page="nowPage"/>
       </div>
     </div>
     <Pagnation class="snacks__pagnation" :list-data-length="filterTown.length" v-model="nowPage"/>
@@ -90,10 +90,9 @@ export default {
       return this.filterCity.filter(item => item.Town === this.filterKeywords.town);
     },
     getPerPageData() {
-      const NUM_PER_PAGE = 10;
       const arr = [];
-      const min = (this.nowPage - 1) * NUM_PER_PAGE;
-      const max = min + NUM_PER_PAGE;
+      const min = (this.nowPage - 1) * this.$Global.NUM_PER_PAGE;
+      const max = min + this.$Global.NUM_PER_PAGE;
       for (let i = min; i < max; i += 1) {
         if (!this.filterTown[i]) {
           break;

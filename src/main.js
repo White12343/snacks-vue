@@ -2,6 +2,9 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import App from './App';
+import Global from './components/Global';
+
+Vue.prototype.$Global = Global;
 
 const bus = new Vue({});
 

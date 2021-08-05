@@ -15,7 +15,7 @@
         :class="{'listTable__tr--cancel': index % 2}"
         v-for="(item, index) in cardDataList"
         :key="index">
-        <td class="listTable__td text-cancel text-right">{{ index + 1 }}</td>
+        <td class="listTable__td text-cancel text-right">{{ countIndex(index) }}</td>
         <td class="listTable__td text-cancel" :title="item.City">{{ item.City }}</td>
         <td class="listTable__td text-cancel" :title="item.Town">{{ item.Town }}</td>
         <td class="listTable__td" :title="item.Name">{{ item.Name }}</td>
@@ -33,10 +33,15 @@ export default {
       type: Array,
       require: true,
     },
+    page: {
+      type: Number,
+      default: 1,
+    },
   },
-  data() {
-    return {
-    };
+  methods: {
+    countIndex(index) {
+      return ((this.page - 1) * this.$Global.NUM_PER_PAGE) + (index + 1);
+    },
   },
 };
 </script>

@@ -27,8 +27,7 @@ export default {
   },
   computed: {
     total() {
-      const NUM_PER_PAGE = 10;
-      return Math.ceil(this.listDataLength / NUM_PER_PAGE);
+      return Math.ceil(this.listDataLength / this.$Global.NUM_PER_PAGE);
     },
   },
   methods: {
