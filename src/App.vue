@@ -3,7 +3,7 @@
     <Header/>
     <main class="main container mx-auto">
       <div class="main__cntr">
-        <ListConsole/>
+        <!-- <ListConsole/> -->
         <SnacksList/>
       </div>
       <aside class="aside">
