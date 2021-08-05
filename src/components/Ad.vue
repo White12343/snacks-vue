@@ -21,15 +21,15 @@ export default {
       adData: [
         {
           name: 'adv1',
-          imgUrl: '/static/images/adv1.png',
+          imgUrl: `${process.env.VUE_APP_SERVER}static/images/adv1.png`,
         },
         {
           name: 'adv2',
-          imgUrl: '/static/images/adv2.png',
+          imgUrl: `${process.env.VUE_APP_SERVER}static/images/adv2.png`,
         },
         {
           name: 'adv3',
-          imgUrl: '/static/images/adv3.png',
+          imgUrl: `${process.env.VUE_APP_SERVER}static/images/adv3.png`,
         },
       ],
     };

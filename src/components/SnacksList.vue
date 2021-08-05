@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     getData() {
-      const api = '/static/data/data.json';
+      const api = `${process.env.VUE_APP_SERVER}static/data/data.json`;
       this.isLoading = true;
       document.body.style.overflow = 'hidden';
       fetch(api)
