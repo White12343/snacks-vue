@@ -21,9 +21,6 @@ export default {
     'headline',
     'selectId',
   ],
-  data() {
-    return {};
-  },
 };
 </script>
 

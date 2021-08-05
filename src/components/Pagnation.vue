@@ -21,10 +21,6 @@
 export default {
   name: 'Pagnation',
   props: ['value', 'listDataLength'],
-  data() {
-    return {
-    };
-  },
   computed: {
     total() {
       return Math.ceil(this.listDataLength / this.$Global.NUM_PER_PAGE);

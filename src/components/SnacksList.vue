@@ -1,20 +1,24 @@
 <template>
   <div class="snacks" :class="getSnacksModeClass">
     <ListConsole :list-data="cardData" @filter="setFilterKeywords"/>
+
     <div class="snacks__cntr">
       <ul
         class="snacks__ls"
         v-if="mode === 'ListMode' || mode === 'CardMode'"
       >
-        <li class="snacks__li" v-for="(item, index) in getPerPageData" :key="index">
+        <li class="snacks__li" v-for="(item, index) in perPageData" :key="index">
           <Card :mode="mode" :card-data="item"/>
         </li>
       </ul>
+
       <div class="snacks__table" v-else-if="mode === 'TableMode'">
-        <ListTable :card-data-list="getPerPageData" :page="nowPage"/>
+        <ListTable :card-data-list="perPageData" :page="nowPage"/>
       </div>
     </div>
+
     <Pagnation class="snacks__pagnation" :list-data-length="filterTown.length" v-model="nowPage"/>
+
     <Loading v-if="isLoading"/>
   </div>
 </template>
@@ -59,7 +63,20 @@ export default {
     },
     setFilterKeywords(keywords) {
       this.filterKeywords = keywords;
+      this.resetPage();
+    },
+    resetPage() {
       this.nowPage = 1;
+    },
+    getPerPageData(firstIndex, lastIndex) {
+      const arr = [];
+      for (let i = firstIndex; i < lastIndex; i += 1) {
+        if (!this.filterTown[i]) {
+          break;
+        }
+        arr.push(this.filterTown[i]);
+      }
+      return arr;
     },
   },
   computed: {
@@ -89,17 +106,14 @@ export default {
 
       return this.filterCity.filter(item => item.Town === this.filterKeywords.town);
     },
-    getPerPageData() {
-      const arr = [];
-      const min = (this.nowPage - 1) * this.$Global.NUM_PER_PAGE;
-      const max = min + this.$Global.NUM_PER_PAGE;
-      for (let i = min; i < max; i += 1) {
-        if (!this.filterTown[i]) {
-          break;
-        }
-        arr.push(this.filterTown[i]);
-      }
-      return arr;
+    firstIndexPerPage() {
+      return (this.nowPage - 1) * this.$Global.NUM_PER_PAGE;
+    },
+    lastIndexPerPage() {
+      return this.firstIndexPerPage + this.$Global.NUM_PER_PAGE;
+    },
+    perPageData() {
+      return this.getPerPageData(this.firstIndexPerPage, this.lastIndexPerPage);
     },
   },
   components: {

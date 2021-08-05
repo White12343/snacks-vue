@@ -30,10 +30,6 @@ export default {
       require: false,
     },
   },
-  data() {
-    return {
-    };
-  },
 };
 </script>
 
