@@ -1,6 +1,6 @@
 <template>
   <select
-    class="filterSelect"
+    class="SnacksFilter"
     :id="selectId"
     :name="selectId"
     :value="value"
@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: 'FilterSelect',
+  name: 'SnacksFilter',
   props: [
     'value',
     'listData',
@@ -25,7 +25,7 @@ export default {
 </script>
 
 <style>
-.filterSelect {
+.SnacksFilter {
   padding: 10px;
   font-size: 16px;
   background-color: #D6D6D6;

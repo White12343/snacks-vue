@@ -14,10 +14,10 @@
 </template>
 
 <script>
-import Header from './components/Header';
-import SnacksList from './components/SnacksList';
-import Ad from './components/Ad';
-import Footer from './components/Footer';
+import Header from './components/header/Header';
+import SnacksList from './components/snacks/SnacksContainer';
+import Ad from './components/ad/Ad';
+import Footer from './components/footer/Footer';
 
 export default {
   name: 'App',

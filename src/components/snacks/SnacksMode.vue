@@ -17,12 +17,12 @@
 </template>
 
 <script>
-import ListModeImg from '../assets/icon/th-list-solid.svg';
-import TableModeImg from '../assets/icon/align-justify-solid.svg';
-import CardModeImg from '../assets/icon/th-large-solid.svg';
+import ListModeImg from '../../assets/icon/th-list-solid.svg';
+import TableModeImg from '../../assets/icon/align-justify-solid.svg';
+import CardModeImg from '../../assets/icon/th-large-solid.svg';
 
 export default {
-  name: 'Mode',
+  name: 'SnacksMode',
   data() {
     return {
       nowMode: 'ListMode',

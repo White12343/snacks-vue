@@ -1,34 +1,55 @@
 <template>
   <div class="snacks" :class="getSnacksModeClass">
-    <ListConsole :list-data="cardData" @filter="setFilterKeywords"/>
+    <div class="snacks__console">
+      <div class="snacks__filter">
+        <SnacksFilter
+          v-model="city"
+          :list-data="cityData"
+          @select="resetHandler"
+          class="snacks__select"
+          headline="請選擇行政區域..."
+          select-id="FilterCity"
+        />
+        <SnacksFilter
+          v-model="town"
+          :list-data="townData"
+          @select="resetPage"
+          class="snacks__select"
+          headline="請選擇鄉鎮區..."
+          select-id="FilterTown"
+        />
+      </div>
+      <SnacksMode class="snacks__mode"/>
+
+    </div>
     <div class="snacks__cntr">
       <ul
         class="snacks__ls"
         v-if="mode === 'ListMode' || mode === 'CardMode'"
       >
         <li class="snacks__li" v-for="(item, index) in perPageData" :key="index">
-          <Card :mode="mode" :card-data="item"/>
+          <SnacksCard :mode="mode" :card-data="item"/>
         </li>
       </ul>
 
       <div class="snacks__table" v-else-if="mode === 'TableMode'">
-        <ListTable :card-data-list="perPageData" :page="nowPage"/>
+        <SnacksTable :card-data-list="perPageData" :page="nowPage"/>
       </div>
     </div>
 
-    <Pagnation class="snacks__pagnation" :list-data-length="filterTown.length" v-model="nowPage"/>
+    <Pagnation class="snacks__pagnation" :list-data-length="filterData.length" v-model="nowPage"/>
 
     <Loading v-if="isLoading"/>
   </div>
 </template>
 
 <script>
-import Card from './Card';
-import ListTable from './ListTable';
-import ListConsole from './ListConsole';
-import Pagnation from './Pagnation';
-import Loading from './Loading';
-import FilterSelect from './FilterSelect';
+import SnacksCard from './SnacksCard';
+import SnacksTable from './SnacksTable';
+import Pagnation from '../pagnation/Pagnation';
+import Loading from '../loading/Loading';
+import SnacksFilter from './SnacksFilter';
+import SnacksMode from './SnacksMode';
 
 export default {
   name: 'SnacksList',
@@ -37,10 +58,8 @@ export default {
       mode: 'ListMode',
       isLoading: false,
       cardData: [],
-      filterKeywords: {
-        city: '',
-        town: '',
-      },
+      city: '',
+      town: '',
       nowPage: 1,
     };
   },
@@ -61,22 +80,25 @@ export default {
           this.cardData = data;
         });
     },
-    setFilterKeywords(keywords) {
-      this.filterKeywords = keywords;
-      this.resetPage();
+    getPerPageData(firstIndex, lastIndex) {
+      const arr = [];
+      for (let i = firstIndex; i < lastIndex; i += 1) {
+        if (!this.filterData[i]) {
+          break;
+        }
+        arr.push(this.filterData[i]);
+      }
+      return arr;
     },
     resetPage() {
       this.nowPage = 1;
     },
-    getPerPageData(firstIndex, lastIndex) {
-      const arr = [];
-      for (let i = firstIndex; i < lastIndex; i += 1) {
-        if (!this.filterTown[i]) {
-          break;
-        }
-        arr.push(this.filterTown[i]);
-      }
-      return arr;
+    resetTown() {
+      this.town = '';
+    },
+    resetHandler() {
+      this.resetPage();
+      this.resetTown();
     },
   },
   computed: {
@@ -92,19 +114,29 @@ export default {
           return '';
       }
     },
+    cityData() {
+      return [...new Set(this.cardData.map(item => item.City))];
+    },
+    townData() {
+      return [
+        ...new Set(this.cardData
+          .filter(item => item.City === this.city)
+          .map(item => item.Town)),
+      ];
+    },
     filterCity() {
-      if (!this.filterKeywords.city) {
-        return this.cardData;
-      }
-
-      return this.cardData.filter(item => item.City === this.filterKeywords.city);
+      return this.cardData.filter(item => item.City === this.city);
     },
     filterTown() {
-      if (!this.filterKeywords.town) {
+      return this.filterCity.filter(item => item.Town === this.town);
+    },
+    filterData() {
+      if (!this.city) {
+        return this.cardData;
+      } else if (!this.town) {
         return this.filterCity;
       }
-
-      return this.filterCity.filter(item => item.Town === this.filterKeywords.town);
+      return this.filterTown;
     },
     firstIndexPerPage() {
       return (this.nowPage - 1) * this.$Global.NUM_PER_PAGE;
@@ -117,12 +149,12 @@ export default {
     },
   },
   components: {
-    Card,
-    ListTable,
-    ListConsole,
+    SnacksCard,
+    SnacksTable,
     Pagnation,
     Loading,
-    FilterSelect,
+    SnacksFilter,
+    SnacksMode,
   },
 };
 </script>
@@ -155,6 +187,33 @@ export default {
 @media screen and (max-width: 414px) {
   .snacks-card .snacks__li {
     width: 100%;
+  }
+}
+
+
+.snacks__console {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+
+.snacks__select {
+  margin-right: 6px;
+}
+
+@media screen and (max-width: 414px) {
+  .snacks__console {
+    flex-direction: column;
+  }
+
+  .snacks__select {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 12px;
+  }
+
+  .snacks__mode {
+    align-self: center;
   }
 }
 
