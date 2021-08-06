@@ -6,7 +6,7 @@
         :list-data="cityData"
         @select="
           resetTown();
-          chooseFilterKeywords();
+          emitFilterData();
         "
         class="console__select"
         headline="請選擇行政區域..."
@@ -14,8 +14,8 @@
       />
       <FilterSelect
         v-model="town"
-        @select="chooseFilterKeywords"
         :list-data="townData"
+        @select="emitFilterData"
         class="console__select"
         headline="請選擇鄉鎮區..."
         select-id="FilterTown"
@@ -44,41 +44,35 @@ export default {
   },
   computed: {
     cityData() {
-      return this.organizeCityData();
+      return [...new Set(this.listData.map(item => item.City))];
     },
     townData() {
-      return this.organizeTownData();
+      return [
+        ...new Set(this.listData
+          .filter(item => item.City === this.city)
+          .map(item => item.Town)),
+      ];
+    },
+    filterCity() {
+      if (!this.city) {
+        return this.listData;
+      }
+      return this.listData.filter(item => item.City === this.city);
+    },
+    filterTown() {
+      if (!this.town) {
+        return this.filterCity;
+      }
+      this.emitFilterData();
+      return this.filterCity.filter(item => item.Town === this.town);
     },
   },
   methods: {
-    chooseFilterKeywords() {
+    emitFilterData() {
       this.$emit('filter', {
         city: this.city,
         town: this.town,
       });
-    },
-    organizeCityData() {
-      const list = [];
-      this.listData.forEach((item) => {
-        if (!list.includes(item.City)) {
-          list.push(item.City);
-        }
-      });
-      return list;
-    },
-    organizeTownData() {
-      const list = [];
-      if (!this.city) {
-        return list;
-      }
-
-      this.listData.forEach((item) => {
-        if (item.City === this.city && !list.includes(this.Town)) {
-          list.push(item.Town);
-        }
-      });
-
-      return list;
     },
     resetTown() {
       this.town = '';

@@ -1,7 +1,6 @@
 <template>
   <div class="snacks" :class="getSnacksModeClass">
     <ListConsole :list-data="cardData" @filter="setFilterKeywords"/>
-
     <div class="snacks__cntr">
       <ul
         class="snacks__ls"
@@ -29,6 +28,7 @@ import ListTable from './ListTable';
 import ListConsole from './ListConsole';
 import Pagnation from './Pagnation';
 import Loading from './Loading';
+import FilterSelect from './FilterSelect';
 
 export default {
   name: 'SnacksList',
@@ -122,6 +122,7 @@ export default {
     ListConsole,
     Pagnation,
     Loading,
+    FilterSelect,
   },
 };
 </script>
