@@ -123,8 +123,7 @@ export default {
       }
       // 選 city，也選 town
       return this.cardData
-        .filter(item => item.City === this.city)
-        .filter(item => item.Town === this.town);
+        .filter(item => item.City === this.city && item.Town === this.town);
     },
     perPageData() {
       const arr = [];
