@@ -23,6 +23,7 @@ import CardModeImg from '../../assets/icon/th-large-solid.svg';
 
 export default {
   name: 'SnacksMode',
+  props: ['value'],
   data() {
     return {
       nowMode: 'ListMode',
@@ -45,7 +46,7 @@ export default {
   methods: {
     clickModehandler(mode) {
       this.nowMode = mode;
-      this.$bus.$emit('changeMode', mode);
+      this.$emit('input', mode);
     },
   },
 };
@@ -80,8 +81,8 @@ export default {
 .mode__icon {
   width: 20px;
   height: 20px;
-  filter: opacity(.7);
-  vertical-align: bottom;
+  filter: opacity(.6);
+  vertical-align: middle;
 }
 
 .mode__btn--active .mode__icon {

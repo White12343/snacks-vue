@@ -19,7 +19,7 @@
           select-id="FilterTown"
         />
       </div>
-      <SnacksMode class="snacks__mode"/>
+      <SnacksMode class="snacks__mode" v-model="mode"/>
 
     </div>
     <div class="snacks__cntr">
@@ -65,7 +65,6 @@ export default {
   },
   created() {
     this.getData();
-    this.$bus.$on('changeMode', (mode) => { this.mode = mode; });
   },
   methods: {
     getData() {
@@ -79,16 +78,6 @@ export default {
           document.body.style.overflow = '';
           this.cardData = data;
         });
-    },
-    getPerPageData(firstIndex, lastIndex) {
-      const arr = [];
-      for (let i = firstIndex; i < lastIndex; i += 1) {
-        if (!this.filterData[i]) {
-          break;
-        }
-        arr.push(this.filterData[i]);
-      }
-      return arr;
     },
     resetPage() {
       this.nowPage = 1;
@@ -124,28 +113,30 @@ export default {
           .map(item => item.Town)),
       ];
     },
-    filterCity() {
-      return this.cardData.filter(item => item.City === this.city);
-    },
-    filterTown() {
-      return this.filterCity.filter(item => item.Town === this.town);
-    },
     filterData() {
       if (!this.city) {
+        // 沒選 city
         return this.cardData;
       } else if (!this.town) {
-        return this.filterCity;
+        // 選 city，未選 town
+        return this.cardData.filter(item => item.City === this.city);
       }
-      return this.filterTown;
-    },
-    firstIndexPerPage() {
-      return (this.nowPage - 1) * this.$Global.NUM_PER_PAGE;
-    },
-    lastIndexPerPage() {
-      return this.firstIndexPerPage + this.$Global.NUM_PER_PAGE;
+      // 選 city，也選 town
+      return this.cardData
+        .filter(item => item.City === this.city)
+        .filter(item => item.Town === this.town);
     },
     perPageData() {
-      return this.getPerPageData(this.firstIndexPerPage, this.lastIndexPerPage);
+      const arr = [];
+      const min = (this.nowPage - 1) * this.$Global.NUM_PER_PAGE;
+      const max = min + this.$Global.NUM_PER_PAGE;
+      for (let i = min; i < max; i += 1) {
+        if (!this.filterData[i]) {
+          break;
+        }
+        arr.push(this.filterData[i]);
+      }
+      return arr;
     },
   },
   components: {
